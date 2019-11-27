@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:direct_select_flutter/generated/i18n.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
@@ -15,6 +15,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  List<String> listData = ['北京', '上海', '深圳'];
+  PaddingItemController paddingItemController = PaddingItemController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,68 +25,90 @@ class _MyAppState extends State<MyApp> {
               title: Text('direct_select_flutter Demo'),
             ),
             body: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.red)),
-              height: 900,
-              child: DirectSelectContainer(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    verticalDirection: VerticalDirection.down,
-                    children: <Widget>[
-                      SizedBox(height: 150.0),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: AlignmentDirectional.centerStart,
-                              margin: EdgeInsets.only(left: 4),
-                              child: Text("City"),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                child: Card(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Padding(
-                                          child: DirectSelectList<String>(
-                                              values: _getVals(),
-                                              defaultItemIndex: 3,
-                                              itemBuilder: (String value) =>
-                                                  getDropDownMenuItem(value),
-                                              focusedItemDecoration:
-                                                  _getDslDecoration(),
-                                              onItemSelectedListener:
-                                                  (item, index, context) {
-                                                Scaffold.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content: Text(item)));
-                                              }),
-                                          padding: EdgeInsets.only(left: 12),
-                                        ),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.yellow)),
+                // height: 900,
+                child: SingleChildScrollView(
+                    child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.green)),
+                  child: DirectSelectContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        verticalDirection: VerticalDirection.down,
+                        children: <Widget>[
+                          SizedBox(height: 800.0),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  margin: EdgeInsets.only(left: 4),
+                                  child: Text("City"),
+                                ),
+                                Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                    child: Card(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Padding(
+                                              child: DirectSelectList<String>(
+                                                  values: listData,
+                                                  defaultItemIndex: 0,
+                                                  itemBuilder: (String value) =>
+                                                      getDropDownMenuItem(
+                                                          value),
+                                                  focusedItemDecoration:
+                                                      _getDslDecoration(),
+                                                  onUserTappedListener: () {
+                                                    print('点击了每一项--');
+                                                  },
+                                                  onItemSelectedListener:
+                                                      (item, index, context) {
+                                                    print(
+                                                        '${item}============${index}');
+                                                    Scaffold.of(context)
+                                                        .showSnackBar(SnackBar(
+                                                            content:
+                                                                Text(item)));
+                                                  }),
+                                              padding:
+                                                  EdgeInsets.only(left: 12),
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 8),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: Colors.red)),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    print('点击了选择按钮--');
+                                                  },
+                                                  icon: Icon(Icons.unfold_more),
+                                                ),
+                                              ))
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 8),
-                                        child: Icon(
-                                          Icons.unfold_more,
-                                          color: Colors.black38,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
+                                    ))
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            )));
+                )))));
   }
 
   DirectSelectItem<String> getDropDownMenuItem(String value) {
@@ -96,6 +120,7 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
+  _changeCity() {}
   _getDslDecoration() {
     return BoxDecoration(
       border: BorderDirectional(
@@ -105,7 +130,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  List<String> _getVals() {
-    return ['北京', '上海', '广州', '深圳'];
-  }
+  // List<String> _getVals() {
+  //   return ['北京', '上海', '广州', '深圳'];
+  // }
 }
