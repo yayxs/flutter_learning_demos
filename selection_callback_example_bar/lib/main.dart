@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './bar_sel_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,11 +28,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('demo test'),
       ),
-      body: Chart(),
+      body: Test(),
     );
   }
 }

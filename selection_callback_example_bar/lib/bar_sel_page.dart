@@ -1,73 +1,107 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart';
-import 'package:charts_flutter/src/text_element.dart';
-import 'package:charts_flutter/src/text_style.dart' as style;
+import 'package:charts_flutter/flutter.dart' as charts;
+import './show_detail_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Chart extends StatelessWidget {
+class Test extends StatefulWidget {
+  _TestState createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  String _year;
+  int _sales;
+  bool flag = false; // 定义是否点击
+  //点击柱状图触发的函数
+  _onSelectionChanged(charts.SelectionModel model) {
+    final selectedDatum = model.selectedDatum;
+    print(selectedDatum.first.datum.year);
+    print(selectedDatum.first.datum.sales);
+    print(selectedDatum.first.series.displayName);
+    setState(() {
+      // 改变标记状态
+      flag = true;
+      //改变两个显示的数值
+      _year = selectedDatum.first.datum.year;
+      _sales = selectedDatum.first.datum.sales;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      _createSampleData(),
-      behaviors: [
-        LinePointHighlighter(symbolRenderer: CustomCircleSymbolRenderer())
-      ],
-      selectionModels: [
-        SelectionModelConfig(changedListener: (SelectionModel model) {
-          if (model.hasDatumSelection)
-            print(model.selectedSeries[0]
-                .measureFn(model.selectedDatum[0].index));
-        })
-      ],
+    return Container(
+      width: ScreenUtil.getInstance().setWidth(700),
+      height: ScreenUtil.getInstance().setHeight(500),
+      decoration:
+          BoxDecoration(border: Border.all(width: 1, color: Colors.red)),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.blueAccent)),
+            width: double.infinity,
+            height: ScreenUtil.getInstance().setHeight(500),
+            child: charts.BarChart(
+              //通过下面获取数据传入
+              ChartFlutterBean.createSampleData(),
+              //配置项，以及设置触发的函数
+              selectionModels: [
+                charts.SelectionModelConfig(
+                  type: charts.SelectionModelType.info,
+                  changedListener: _onSelectionChanged,
+                )
+              ],
+            ),
+          ),
+          _showMask(flag, 4.0)
+        ],
+      ),
     );
   }
 
-  List<Series<LinearSales, int>> _createSampleData() {
+  // 自定义方式显示蒙层
+  _showMask(bool flag, double index) {
+    var widthOffset = ScreenUtil.getInstance().setWidth(63);
+    var initWidth = ScreenUtil.getInstance().setWidth(28);
+    return flag == true
+        ? Positioned(
+            bottom: 22,
+            left: initWidth * index + widthOffset,
+            child: Container(
+              color: Color.fromRGBO(0, 0, 0, 0.2),
+              width: ScreenUtil.getInstance().setWidth(90),
+              height: ScreenUtil.getInstance().setHeight(410),
+            ),
+          )
+        : Container();
+  }
+}
+
+//一下为组合柱状图数据部分
+class OrdinalSales {
+  final String year;
+  final int sales;
+
+  OrdinalSales(this.year, this.sales);
+}
+
+class ChartFlutterBean {
+  static List<charts.Series<OrdinalSales, String>> createSampleData() {
     final data = [
-      new LinearSales(0, 5),
-      new LinearSales(1, 25),
-      new LinearSales(2, 100),
-      new LinearSales(3, 75),
+      new OrdinalSales('xshd', 0),
+      new OrdinalSales('yd', 1),
+      new OrdinalSales('js', 0),
+      new OrdinalSales('dx', 11),
+      new OrdinalSales('tj', 28),
     ];
+
     return [
-      new Series<LinearSales, int>(
+      new charts.Series<OrdinalSales, String>(
         id: 'Sales',
-        colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (OrdinalSales sales, _) => sales.year,
+        measureFn: (OrdinalSales sales, _) => sales.sales,
         data: data,
       )
     ];
   }
-}
-
-class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
-  @override
-  void paint(ChartCanvas canvas, Rectangle<num> bounds,
-      {List<int> dashPattern,
-      Color fillColor,
-      Color strokeColor,
-      double strokeWidthPx}) {
-    super.paint(canvas, bounds,
-        dashPattern: dashPattern,
-        fillColor: fillColor,
-        strokeColor: strokeColor,
-        strokeWidthPx: strokeWidthPx);
-    canvas.drawRect(
-        Rectangle(bounds.left - 5, bounds.top - 30, bounds.width + 10,
-            bounds.height + 10),
-        fill: Color.white);
-    var textStyle = style.TextStyle();
-    textStyle.color = Color.black;
-    textStyle.fontSize = 15;
-    canvas.drawText(TextElement("1", style: textStyle), (bounds.left).round(),
-        (bounds.top - 28).round());
-  }
-}
-
-class LinearSales {
-  final int year;
-  final int sales;
-  LinearSales(this.year, this.sales);
 }
