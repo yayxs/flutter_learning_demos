@@ -8,8 +8,8 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  String _year;
-  int _sales;
+  String year;
+  int sales;
   bool flag = false; // 定义是否点击
   //点击柱状图触发的函数
   _onSelectionChanged(charts.SelectionModel model) {
@@ -21,8 +21,8 @@ class _TestState extends State<Test> {
       // 改变标记状态
       flag = true;
       //改变两个显示的数值
-      _year = selectedDatum.first.datum.year;
-      _sales = selectedDatum.first.datum.sales;
+      year = selectedDatum.first.datum.year;
+      sales = selectedDatum.first.datum.sales;
     });
   }
 
@@ -87,11 +87,11 @@ class OrdinalSales {
 class ChartFlutterBean {
   static List<charts.Series<OrdinalSales, String>> createSampleData() {
     final data = [
-      new OrdinalSales('xshd', 0),
-      new OrdinalSales('yd', 1),
-      new OrdinalSales('js', 0),
-      new OrdinalSales('dx', 11),
-      new OrdinalSales('tj', 28),
+      new OrdinalSales('吃', 0),
+      new OrdinalSales('喝', 1),
+      new OrdinalSales('玩', 0),
+      new OrdinalSales('乐', 11),
+      new OrdinalSales('学', 28),
     ];
 
     return [
