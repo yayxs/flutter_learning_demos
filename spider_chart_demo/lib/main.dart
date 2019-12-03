@@ -25,7 +25,7 @@ class MyHomePage extends StatelessWidget {
           width: 300,
           height: 300,
           child: SpiderChart(
-              data: [49.98, 2.44, 0.82, 41.47, 5.29],
+              data: [49.98, 24.4, 8.2, 41.47, 15.29],
               maxValue: 100,
               colors: <Color>[
                 Colors.red,
@@ -35,11 +35,11 @@ class MyHomePage extends StatelessWidget {
                 Colors.indigo,
               ],
               labels: <String>[
-                "听讲",
-                "举手",
-                "学生互动",
-                "读写",
-                "应答",
+                "吃",
+                "喝",
+                "玩",
+                "乐",
+                "学",
               ]),
         ),
       ),
