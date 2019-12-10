@@ -3,14 +3,30 @@ import 'dart:math';
 
 final List listData = [
   {
-    "duration": 10.0,
-    "times": 2.0,
-    "name": "Flutter",
-    "radios"
-        "offsetX": 50.0,
-    "offsetX": 50.0
+    "duration": 0,
+    "times": 1,
+    "name": "意",
   },
-  {"duration": 3, "times": 1, "name": "Dart", "flag": 1},
+  {
+    "duration": 0,
+    "times": 1,
+    "name": "世",
+  },
+  {
+    "duration": 83265,
+    "times": 1,
+    "name": "有",
+  },
+  {
+    "duration": 83265,
+    "times": 1,
+    "name": "的",
+  },
+  {
+    "duration": 0,
+    "times": 1,
+    "name": "界",
+  },
 ];
 
 class CustomPaintRoute extends StatelessWidget {
