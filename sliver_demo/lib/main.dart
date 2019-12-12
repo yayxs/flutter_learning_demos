@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: CustomScrollViewPage());
+        home: Scaffold(
+          body: CustomScrollViewPage(),
+        ));
   }
 }
 
