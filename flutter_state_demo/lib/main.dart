@@ -2,8 +2,28 @@ import 'package:flutter/material.dart';
 import './pages/my_page_a.dart';
 import './pages/my_page_b.dart';
 import './pages/my_page_c.dart';
+import 'package:provider/provider.dart';
+import './provider/money_provider.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(
+//       ChangeNotifierProvider(
+//         // builder: (context) => MoneyProvider(),
+//         create: (context) => MoneyProvider(),
+//         child: MyApp(),
+//       ),
+//     );
+
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MoneyProvider()),
+        // Provider( create: (context) => MoneyProvider(),),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
