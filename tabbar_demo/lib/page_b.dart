@@ -22,7 +22,7 @@ class _PageBState extends State<PageB> with SingleTickerProviderStateMixin {
   ];
   @override
   void initState() {
-    print('sasas');
+    print('来到了B页面');
     // setState(() {});
     super.initState();
     tabController = TabController(vsync: this, length: titleTabs.length);
