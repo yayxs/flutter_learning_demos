@@ -95,6 +95,13 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
     source: hosted
     version: "1.1.8"
+  orientation:
+    dependency: "direct main"
+    description:
+      name: orientation
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+    source: hosted
+    version: "1.1.0"
   path:
     dependency: transitive
     description:
@@ -116,13 +123,6 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
     source: hosted
     version: "2.4.0"
-  provider:
-    dependency: "direct main"
-    description:
-      name: provider
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
-    source: hosted
-    version: "3.2.0"
   quiver:
     dependency: transitive
     description:
