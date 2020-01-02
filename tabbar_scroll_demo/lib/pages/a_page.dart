@@ -16,7 +16,10 @@ class _APageState extends State<APage> {
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.red,
+            child: Center(
+              child: Text('saaaaaaaaaa'),
+            ),
+            color: Colors.white,
             height: 500,
           ),
           // Container(
