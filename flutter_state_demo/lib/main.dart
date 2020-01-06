@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_demo/pages/mobx_test.dart';
 import './pages/my_page_a.dart';
 import './pages/my_page_b.dart';
 import './pages/my_page_c.dart';
 import 'package:provider/provider.dart';
 import './provider/money_provider.dart';
-
+import './store/todo/todo_store.dart';
 // void main() => runApp(
 //       ChangeNotifierProvider(
 //         // builder: (context) => MoneyProvider(),
@@ -18,7 +19,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => MoneyProvider()),
-        // Provider( create: (context) => MoneyProvider(),),
+        Provider<TodoStore>(create: (_) => TodoStore()),
       ],
       child: MyApp(),
     ),
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: MobxPage(),
     );
   }
 }
