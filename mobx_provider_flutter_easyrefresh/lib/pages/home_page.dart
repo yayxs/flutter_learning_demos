@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx_provider_flutter_easyrefresh/stores/home_store.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeStore homeStore;
+  HomeStore _store;
   EasyRefreshController _controller;
 
   @override
@@ -31,20 +32,61 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _controller = EasyRefreshController();
 
-    Future(() {
-      homeStore = Provider.of<HomeStore>(context, listen: false);
-      homeStore.getData();
-    });
+    _store = HomeStore();
+    _store.getData(); // 获取数据
+    print('<<<<<<<${_store.loading}');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Text('sas'),
-    );
+        appBar: AppBar(),
+        body: Observer(builder: (_) {
+          var resData = _store.obj?.data;
+          return resData == null
+              ? Text("<${resData}")
+              : EasyRefresh(
+                  enableControlFinishRefresh: false,
+                  enableControlFinishLoad: false,
+                  child: _store.loading
+                      ? Align(
+                          child: Text("${_store.loading}"),
+                        )
+                      : ListView.builder(
+                          itemCount: _store.obj.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              child: Text('${_store.obj.data[index].author}'),
+                            );
+                          },
+                        ),
+                  onRefresh: () async {
+                    _store.changePage(1);
+                    _store.getData();
+                    if (!_store.loading) {
+                      _controller.finishRefresh(success: true);
+                    }
+                  },
+                  // 如果超过了总的条数就不要拉刷新了
+                  onLoad:
+                      (_store.obj?.totalElements ?? 0 / _store.params['size'])
+                                  .ceil() >
+                              _store.params['index']
+                          ? () async {
+                              _store.changePage(_store.params['index'] + 1);
+                              _store.getData();
+                              if (!_store.loading) {
+                                _controller.finishLoad(noMore: true);
+                              }
+                            }
+                          : null,
+                );
+        }));
   }
-
-  // @override
-  // bool get wantKeepAlive => true;
 }
