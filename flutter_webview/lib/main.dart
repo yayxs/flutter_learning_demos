@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview/my_home_page.dart';
+import 'package:flutter_webview/webview_page.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,35 +11,32 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Main());
+        home: MyHomePage());
   }
 }
 
-class Main extends StatefulWidget {
-  Main({Key key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key}) : super(key: key);
 
   @override
-  _MainState createState() => _MainState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MainState extends State<Main> {
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-              child: Text('sas'),
-              onPressed: () {
-                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                  return MyHomePage(
-                    url:
-                        "http://blog.tangqq.cn/web/flutter-cha-jian-webview_flutter-shi-yong-zhi-bei",
-                  );
-                }));
-              })
-        ],
+      body: Container(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new WebViewPage()),
+            );
+          },
+          child: Text('btn'),
+        ),
       ),
     );
   }
